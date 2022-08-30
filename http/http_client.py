@@ -13,7 +13,7 @@ def response_raise_check(response: Response):
         if code == 104:
             raise NotFoundError
         if code == 300:
-            raise ResponseError('系统繁忙，请稍后再试乓！')
+            raise ResponseError('系统繁忙，请稍后再试')
         if response.status_code >= 500:
             raise RuntimeError(r_body['msg'])
         raise ResponseError(r_body['msg'])
