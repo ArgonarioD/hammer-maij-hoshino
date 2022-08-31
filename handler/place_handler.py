@@ -62,7 +62,7 @@ async def handle_put_maij(
         })
         data = get_json_data_from_response(response)
         await bot.send(event,
-                       f'''成功在{place_name}的队伍中{"添加" if operate_count > 0 else "移除"}{abs(operate_count)}张卡
+                       f'''成功在{data["placeName"]}的队伍中{"添加" if operate_count > 0 else "移除"}{abs(operate_count)}张卡
 当前排卡数为{data["cardCount"]}''', at_sender=True)
 
     ##########
@@ -90,7 +90,7 @@ async def handle_set_maij(
             "operateCount": operate_count
         })
         data = get_json_data_from_response(response)
-        await bot.send(event, f'''成功将{place_name}的队伍设置为{operate_count}张卡
+        await bot.send(event, f'''成功将{data["placeName"]}的队伍设置为{operate_count}张卡
 当前排卡数为{data["cardCount"]}''', at_sender=True)
 
     ##########
