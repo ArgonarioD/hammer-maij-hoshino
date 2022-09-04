@@ -3,7 +3,7 @@ from re import IGNORECASE
 
 from nonebot import NoneBot
 from hoshino.typing import CQEvent
-from .handle_utils import get_group_location, do_request
+from .handle_utils import get_group_location, do_request, get_place_list_str
 from ..const import *
 from ..maij import sv
 from ..http.http_client import client
@@ -96,3 +96,23 @@ async def handle_set_maij(
     ##########
 
     await do_request(bot, event, place_name, do)
+
+
+@sv.on_fullmatch('机厅列表')
+async def handle_place_asc_list(
+        bot: NoneBot,
+        event: CQEvent,
+):
+    location = get_group_location(event.group_id)
+
+    ##########
+    async def do():
+        response = client.get(url=f'{API_URL}/place/list/{location}')
+        data = get_json_data_from_response(response)
+        await bot.send(
+            event, f'''自今日API初始化后，{location}共有{data['total']}所机厅的卡数被更新过，按其当前卡数的正序、更新时间的倒序的排列如下
+{get_place_list_str(data['records'])}''', at_sender=True)
+
+    ##########
+
+    await do_request(bot, event, location, do)

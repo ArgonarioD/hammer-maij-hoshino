@@ -5,6 +5,7 @@ from hoshino.typing import CQEvent
 
 from ..http.response_exception import NotFoundError, MultipleChoicesError, ResponseError
 
+from ..utils import format_local_date_time
 from ..maij_config import plugin_config
 
 end_line = '\n'
@@ -14,6 +15,12 @@ def get_group_location(group_id: int):
     if group_id not in plugin_config.group_location:
         raise ValueError('本群尚未配置地区')
     return plugin_config.group_location[group_id]
+
+
+def get_place_list_str(places) -> str:
+    result_list = [f'- {place["placeName"]}：{place["cardCount"]} ({format_local_date_time(place["updateTime"])})'
+                   for place in places]
+    return end_line.join(result_list)
 
 
 async def do_request(bot: NoneBot, ev: CQEvent, place_name: str, func, handle_not_found: bool = False):
