@@ -18,7 +18,7 @@
 本插件中所接入的Hammer-MaiJ机厅查卡API为本人开发的开放API，欢迎接入使用：[API文档](https://docs.hammer-hfut.tk:233/maij)
 
 ## 使用本插件
-
+### 安装本插件
 1. 将本项目的文件夹放入HoshinoBot的`hoshino/modules`目录下（可以考虑直接在该目录下用如下命令将本仓库clone至该目录下）
 
 ```shell
@@ -45,6 +45,14 @@ pip install httpx==0.23.0
 > ，由于本插件的指令可能与该插件有冲突，所以建议在启用本插件前将该插件路径中的`maimaiDX/maimai.py`
 > 中第787行至第815行（`arcade_person`与`arcade_query_person`两个函数）注释掉
 
+
+### 更新本插件
+在您没有更改过代码的情况下，在`hammer-maij-hoshino`目录（也就是本插件的根目录）下使用如下指令即可。
+```shell
+git pull
+```
+若您自行更改过了本插件中的代码，则需要在`git pull`后自行处理可能带来的合并冲突问题。
+
 ## 功能
 
 与其他前端（一般情况下为其他QQ群Bot）共用Hammer-MaiJ机厅查卡API
@@ -67,7 +75,22 @@ pip install httpx==0.23.0
 | <机厅名称>=<数字>卡                    | 将指定机厅设置为指定排卡数                                                                      |
 | <机厅名称>有谁                        | 查询今日指定机厅的排卡数变更记录                                                                   |
 
+## 启用28小时制显示时间（例：“2022年9月12日 2:00:50” → "26:00:50"）
+在`hammer-maij-hoshino/utils.py`中，将第4行与第5行的代码从
+```python
+    # return f'{(24 if time[3] <= 4 else 0) + time[3]}:{time[4]:02}:{time[5]:02}'
+    return f'{time[0]}年{time[1]}月{time[2]}日 {time[3]}:{time[4]:02}:{time[5]:02}'
+```
+改为
+```python
+    return f'{(24 if time[3] <= 4 else 0) + time[3]}:{time[4]:02}:{time[5]:02}'
+    # return f'{time[0]}年{time[1]}月{time[2]}日 {time[3]}:{time[4]:02}:{time[5]:02}'
+```
+
 ## 更新日志
+### v1.1.1 (*2022-09-12*)
+#### Features
+- 为插件中的时间显示添加了28小时制显示的选择
 ### v1.1.0 (*2022-09-04*)
 #### Features
 - 实现了“机厅列表”功能
