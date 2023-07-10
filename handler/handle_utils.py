@@ -18,7 +18,7 @@ def get_group_location(group_id: int):
 
 
 def get_place_list_str(places) -> str:
-    result_list = [f'- {place["placeName"]}：{place["cardCount"]} ({format_local_date_time(place["updateTime"])})'
+    result_list = [f'''- {place["placeName"]}：{place["cardCount"]} ({format_local_date_time(place["updateTime"])}) {f"（{len(place['announcements'])}条公告）" if len(place['announcements']) > 0 else ""}'''
                    for place in places]
     return end_line.join(result_list)
 
@@ -32,7 +32,7 @@ async def do_request(bot: NoneBot, ev: CQEvent, place_name: str, func, handle_no
     except MultipleChoicesError as me:
         await bot.send(ev, f'''找到了多个匹配您所说的地名{place_name}对应的地点，请用更具体一点的名称进行查询
 匹配到的地点全称如下：
-{end_line.join([f" - {s}" for s in me.choices])}''', at_sender=True)
+{end_line.join([f" - {s}" for s in me.choices])}'''.strip(), at_sender=True)
     except ResponseError as rese:
         await bot.send(ev, f'{rese.message}', at_sender=True)
     except RuntimeError:

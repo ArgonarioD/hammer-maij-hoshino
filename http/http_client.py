@@ -9,7 +9,7 @@ def response_raise_check(response: Response):
         r_body = response.json()
         code = r_body['code']
         if code == 102:
-            raise MultipleChoicesError(r_body['data']['choices'])
+            raise MultipleChoicesError(r_body['data'])
         if code == 104:
             raise NotFoundError
         if code == 300:
